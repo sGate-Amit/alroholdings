@@ -977,7 +977,64 @@
       </footer>
       <!--footer-->
       <!--.main-container-->
-     
-	 
+      <script type="text/javascript" src="../wp-embed.min.js"></script>
+      <script type="text/javascript">
+         /* <![CDATA[ */
+         var mtscontact = {"ajaxurl":"https:\/\/www.alroholdings.com\/wp-admin\/admin-ajax.php"};
+         /* ]]> */
+      </script>
+      <script type="text/javascript" src="../contact.js"></script>
+      <script type="text/javascript">
+         var mapLoaded = false;
+         function initialize() {
+           mapLoaded = true;
+         
+           var geocoder = new google.maps.Geocoder();
+           var lat='';
+           var lng='';
+           geocoder.geocode( { 'address': 'Singapore'}, function(results, status) {
+                   if (status == google.maps.GeocoderStatus.OK) {
+                       lat = results[0].geometry.location.lat(); //getting the lat
+                       lng = results[0].geometry.location.lng(); //getting the lng
+                       map.setCenter(results[0].geometry.location);
+                       var marker = new google.maps.Marker({
+                          map: map,
+                          position: results[0].geometry.location
+                       });
+                    }
+           });
+         
+           var latlng = new google.maps.LatLng(lat, lng);
+         
+           var mapOptions = {
+               zoom: 12,
+               center: latlng,
+               scrollwheel: false,
+               navigationControl: false,
+               scaleControl: false,
+               streetViewControl: false,
+               draggable: true,
+               panControl: false,
+               mapTypeControl: false,
+               zoomControl: false,
+               mapTypeId: google.maps.MapTypeId.ROADMAP,
+               // How you would like to style the map.
+                       // This is where you would paste any style found on Snazzy Maps.
+                       styles: [{featureType:"landscape",stylers:[{saturation:-100},{lightness:65},{visibility:"on"}]}]
+           };
+         
+           var map = new google.maps.Map(document.getElementById("map-canvas"),
+               mapOptions);
+         }
+         //google.maps.event.addDomListener(window, 'load', initialize);
+         jQuery(window).load(function() {
+           jQuery(window).scroll(function() {
+             if (jQuery('.contact_map').isOnScreen() && !mapLoaded) {
+               mapLoaded = true;
+               jQuery('body').append('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWcxrxcVdEziNrsWHUuWNwPWiIkV8__LE&sensor=false&v=3&callback=initialize"></'+'script>');
+             }
+           });
+         });
+      </script>
    </body>
 </html>
